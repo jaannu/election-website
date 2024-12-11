@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote for a Candidate</title>
+    <style>
+        body {  
+            font-family: 'Algerian', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            flex-direction: column;
+            margin: 0;
+        }
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button.voted {
+            background-color: #7e99f2;
+            color: white;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 id="post-title"></h2>
+        <div id="candidate-buttons"></div>
+    </div>
+
+    <script type="module">
+        // Import Firebase libraries
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-database.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBBoxb6wfe0PZGU9Lt79dI9KflYKW7S0FE",
+            authDomain: "scards-7a87e.firebaseapp.com",
+            databaseURL: "https://scards-7a87e-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "scards-7a87e",
+            storageBucket: "scards-7a87e.appspot.com",
+            messagingSenderId: "834610236337",
+            appId: "1:834610236337:web:2b679d88327587b3558b90"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app); // Firebase Authentication
+
+        // Assuming the user is already logged in and we have their ID
+        const currentUser = auth.currentUser?.uid;
+
+        // Retrieve post from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const post = urlParams.get('post');
+
+        // Candidates for each post
+        const candidates = {
+            'president': ['K.Sujith', 'A.Pushpa Varshini'],
+                'vice-president': ['D.Shivani', 'B.Prasanna Venkatesh', 'P.Rohit'],
+                'registration-committee-head': ['H.Clifford', 'M.Rohit'],
+                'non-technical-head': ['S.Avinash', 'P.Shanmugam', 'B.Abilesh'],
+                'asst-treasurer': ['A.M.Roshandass', 'Varsha Vijay'],
+                'joint-technical-head': ['S.Jananii', 'R.Rajakumaran'],
+                'joint-creative-head': ['B.Neha', 'V.Vasanth', 'M.Sadhana'],
+                'asst-sponsorship-head': ['B.Dharshana', 'S.Anish'],
+                'asst-secretary': ['M.Barath', 'P.Vishal'],
+                'joint-dsr': ['R.Gokulnath', 'D.Thishitha'],
+                'joint-non-technical-head': ['M.Akshaya', 'N.Syed Hamid Bakthiyari', 'S.Aravinda Balaji'],
+                'joint-pro': ['S.J.Karlyn Vinyah', 'G.Nithish Balan'],
+                'content-head': ['G.Rithanya', 'A.Mohamed Arshath Parnesh'],
+                'joint-treasurer': ['V.Sarumathi', 'S.M.Hariharan'],
+                'marketing-head': ['K.S.Smrithi', 'R.Lokesh'],
+                'joint-secretary': ['R.Ragavendran', 'S.Kailash'],
+                'joint-editorial-head': ['V.Krithika', 'K.Bhuvaneshwaran']
+        };
+
+        const postTitleElement = document.getElementById('post-title');
+        const candidateButtonsContainer = document.getElementById('candidate-buttons');
+
+        // Set the title based on the post
+        postTitleElement.textContent = `Vote for ${post.replace('-', ' ').toUpperCase()}`;
+
+        // Render candidates if available
+        if (candidates[post]) {
+            createCandidateButtons(candidates[post], currentUser);
+        } else {
+            postTitleElement.textContent = "No candidates available for this post.";
+        }
+        setTimeout(() => {
+                window.history.back();
+            }, 3000);
+
+        function createCandidateButtons(candidates, currentUser) {
+            candidates.forEach(candidate => {
+                const button = document.createElement('button');
+                button.textContent = candidate;
+                button.onclick = () => castVote(candidate, button, currentUser);
+                candidateButtonsContainer.appendChild(button);
+            });
+        }
+
+        function castVote(candidate, button, currentUser) {
+            button.classList.add('voted');
+            button.innerHTML = "Your vote is final; no rewinds in this digital realm😁";
+            button.disabled = true;
+
+            const voteCount = (candidate === 'Kalaiselvi') ? 5 : 2; // Special rule for 'Kalaiselvi'
+
+            // Store the vote in Firebase under the current user's data
+            const userVoteRef = ref(db, 'votes/' + currentUser + '/' + post);
+            set(userVoteRef, {
+                candidate: candidate,
+                voteCount: voteCount,
+                timestamp: new Date().toISOString()
+            }).then(() => {
+                console.log("Vote stored in Firebase");
+            }).catch((error) => {
+                console.error("Error storing vote:", error);
+            });
+
+            // Redirect back after 3 seconds
+           
+        }
+    </script>
+</body>
+</html> 

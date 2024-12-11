@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBBoxb6wfe0PZGU9Lt79dI9KflYKW7S0FE",
+            authDomain: "scards-7a87e.firebaseapp.com",
+            databaseURL: "https://scards-7a87e-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "scards-7a87e",
+            storageBucket: "scards-7a87e.appspot.com",
+            messagingSenderId: "834610236337",
+            appId: "1:834610236337:web:2b679d88327587b3558b90"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        function Login() {
+            const registerNumber = document.getElementById("registerNumber").value;
+            const password = document.getElementById("password").value;
+
+            const userRef = ref(db, "students/" + registerNumber);
+            get(userRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    if (userData.password === password) {
+                        alert("Login successful!");
+                        window.location.href = 'first-page.html'; // Redirect to main page
+                    } else {
+                        alert("Incorrect password. Please try again.");
+                    }
+                } else {
+                    alert("User not found. Please register first.");
+                    window.location.href = 'registration.html'; // Redirect to registration
+                }
+            }).catch((error) => {
+                alert("Error logging in: " + error.message);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("loginForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+                Login();
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url(https://img.freepik.com/free-photo/neon-3d-cybermonday-celebration-template_23-2151850786.jpg);
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(208, 176, 228, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 400px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .input-group {
+            margin: 10px 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .input-group label {
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .login-btn {
+            background: linear-gradient(90deg, #8e44ad, #3498db);
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+            color: white;
+            width: 100%; /* Full width of the container */
+            text-align: center; /* Center the text inside the button */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login Page</h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="registerNumber">Register Number</label>
+                <input type="text" id="registerNumber" placeholder="Register Number" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+    </div>
+</body>
+</html>

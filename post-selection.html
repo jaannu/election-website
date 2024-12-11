@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select a Post</title>
+    <link href="https://fonts.googleapis.com/css2?family=Algerian&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Algerian', sans-serif;
+            background-color: #f0f0f0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        h1 {
+            font-family: 'Roboto', sans-serif;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .carousel-container {
+            width: 90%; /* Increased width to prevent items from being cut off */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            align-items: center;
+        }
+
+        .carousel-item {
+            width: 200px;
+            height: 400px; /* Increased height to accommodate the button */
+            background-color: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Space between image/title and button */
+            align-items: center;
+            margin: 0 10px; /* Reduced margin to fit more items */
+            cursor: pointer;
+            transition: transform 0.5s ease;
+            padding: 15px; /* Added padding for better spacing */
+        }
+
+        .carousel-item img {
+            width: 150px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .carousel-item h3 {
+            margin-top: 10px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: bold; /* Make text bold */
+            text-align: center; /* Center align text */
+        }
+
+        .carousel-item:hover {
+            transform: scale(1.05);
+        }
+
+        .carousel-btns {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .carousel-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .carousel-btn:hover {
+            background-color: #555;
+        }
+
+        .carousel-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Multicolored Vote Button */
+        .vote-btn {
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #1e90ff, #8a2be2); /* Blue to Purple gradient */
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold; /* Make text bold */
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center; /* Center align text */
+            transition: background 0.3s;
+        }
+
+        .vote-btn:hover {
+            background: linear-gradient(45deg, #1c86ee, #7a1fbf); /* Slightly darker on hover */
+        }
+
+        /* Removed Dots Styling for Cleaner Look */
+        /* If you still want to keep dots, you can adjust or remove this section */
+        /*
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #bbb;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background-color: #333;
+        }
+        */
+    </style>
+</head>
+<body>
+    <h1>Select a Post to Vote</h1>
+    <div class="carousel-container">
+        <div class="carousel-btns">
+            <button class="carousel-btn" id="left-btn">←</button>
+            <button class="carousel-btn" id="right-btn">→</button>
+        </div>
+        <div class="carousel" id="carousel">
+            <!-- Top Tier (Leadership) -->
+            <div class="carousel-item" data-post="president">
+                <img src="images/president.jpg" alt="President" />
+                <h3>President</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="vice-president">
+                <img src="images/vice-president.jpg" alt="Vice President" />
+                <h3>Vice President</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+
+            <!-- Executive Roles -->
+            <div class="carousel-item" data-post="secretary">
+                <img src="images/secretary.jpg" alt="Secretary" />
+                <h3>Secretary</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="treasurer">
+                <img src="images/treasurer.jpg" alt="Treasurer" />
+                <h3>Treasurer</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+
+            <!-- Department Heads -->
+            <div class="carousel-item" data-post="event-management-head">
+                <img src="images/event-management-head.jpg" alt="Event Management Head" />
+                <h3>Event Management Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="head-of-operations">
+                <img src="images/head-of-operations.jpg" alt="Head of Operations" />
+                <h3>Head of Operations</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="sponsorship-head">
+                <img src="images/sponsorship-head.jpg" alt="Sponsorship Head" />
+                <h3>Sponsorship Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+
+            <!-- Joint/Assistant Roles -->
+            <div class="carousel-item" data-post="joint-secretary">
+                <img src="images/joint-secretary.jpg" alt="Joint Secretary" />
+                <h3>Joint Secretary</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="joint-treasurer">
+                <img src="images/joint-treasurer.jpg" alt="Joint Treasurer" />
+                <h3>Joint Treasurer</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="joint-sponsorship-head">
+                <img src="images/joint-sponsorship-head.jpg" alt="Joint Sponsorship Head" />
+                <h3>Joint Sponsorship Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+
+            <!-- Functional Heads -->
+            <div class="carousel-item" data-post="marketing-head">
+                <img src="images/marketing-head.jpg" alt="Marketing Head" />
+                <h3>Marketing Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="technical-head">
+                <img src="images/technical-head.jpg" alt="Technical Head" />
+                <h3>Technical Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="non-technical-head">
+                <img src="images/non-technical-head.jpg" alt="Non-Technical Head" />
+                <h3>Non-Technical Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="public-relations-officer">
+                <img src="images/public-relations-officer.jpg" alt="Public Relations Officer" />
+                <h3>Public Relations Officer</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="editorial-head">
+                <img src="images/editorial-head.jpg" alt="Editorial Head" />
+                <h3>Editorial Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="content-head">
+                <img src="images/content-head.jpg" alt="Content Head" />
+                <h3>Content Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="creative-head">
+                <img src="images/creative-head.jpg" alt="Creative Head" />
+                <h3>Creative Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="head-dsr">
+                <img src="images/head-dsr.jpg" alt="Head DSR" />
+                <h3>Head DSR</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="pride-director">
+                <img src="images/pride-director.jpg" alt="P.R.I.D.E Director" />
+                <h3>P.R.I.D.E Director</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+
+            <!-- Assistant Roles -->
+            <div class="carousel-item" data-post="asst-secretary">
+                <img src="images/asst-secretary.jpg" alt="Assistant Secretary" />
+                <h3>Assistant Secretary</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="asst-treasurer">
+                <img src="images/asst-treasurer.jpg" alt="Assistant Treasurer" />
+                <h3>Assistant Treasurer</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="joint-technical-head">
+                <img src="images/joint-technical-head.jpg" alt="Joint Technical Head" />
+                <h3>Joint Technical Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="joint-non-technical-head">
+                <img src="images/joint-non-technical-head.jpg" alt="Joint Non-Technical Head" />
+                <h3>Joint Non-Technical Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="joint-editorial-head">
+                <img src="images/joint-editorial-head.jpg" alt="Joint Editorial Head" />
+                <h3>Joint Editorial Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="joint-content-head">
+                <img src="images/joint-content-head.jpg" alt="Joint Content Head" />
+                <h3>Joint Content Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="assistant-pride-director">
+                <img src="images/assistant-pride-director.jpg" alt="Assistant PRIDE Director" />
+                <h3>Assistant PRIDE Director</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="pride-student-coordinator">
+                <img src="images/pride-student-coordinator.jpg" alt="PRIDE Student Coordinator" />
+                <h3>PRIDE Student Coordinator</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="joint-marketing-head">
+                <img src="images/joint-marketing-head.jpg" alt="Joint Marketing Head" />
+                <h3>Joint Marketing Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="joint-dsr">
+                <img src="images/joint-dsr.jpg" alt="Joint DSR" />
+                <h3>Joint DSR</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="joint-creative-head">
+                <img src="images/joint-creative-head.jpg" alt="Joint Creative Head" />
+                <h3>Joint Creative Head</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="joint-pro">
+                <img src="images/joint-pro.jpg" alt="Joint PRO" />
+                <h3>Joint PRO</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+
+            <!-- Advisory/Coordination -->
+            <div class="carousel-item" data-post="committee-advisor">
+                <img src="images/committee-advisor.jpg" alt="Committee Advisor" />
+                <h3>Committee Advisor</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+            <div class="carousel-item" data-post="student-liaison">
+                <img src="images/student-liaison.jpg" alt="Student Liaison" />
+                <h3>Student Liaison</h3>
+                <button class="vote-btn">Vote</button>
+            </div>
+        </div>
+        <!-- Removed Dots for Cleaner Interface -->
+        <!-- <div class="dots" id="dots-container"></div> -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userId = localStorage.getItem('userId') || Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('userId', userId);
+
+            let votedPosts = JSON.parse(localStorage.getItem(`votes_${userId}`)) || [];
+            const items = document.querySelectorAll('.carousel-item');
+            const carousel = document.getElementById('carousel');
+            const leftBtn = document.getElementById('left-btn');
+            const rightBtn = document.getElementById('right-btn');
+            // const dotsContainer = document.getElementById('dots-container'); // Removed dots
+            let currentIndex = 0;
+            const itemsPerPage = 3; // Number of items visible per carousel view
+            const itemWidth = items[0].offsetWidth + 20; // Adjusted spacing
+
+            // Cast vote and store it in localStorage
+            function castVote(post) {
+                if (!votedPosts.includes(post)) {
+                    votedPosts.push(post);
+                    localStorage.setItem(`votes_${userId}`, JSON.stringify(votedPosts));
+                }
+                // Redirect to voting page
+                window.location.href = `voting-page.html?post=${post}`;
+            }
+
+            // Click event for each vote button
+            items.forEach(item => {
+                const voteBtn = item.querySelector('.vote-btn');
+                if (voteBtn) {
+                    voteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent triggering item click
+                        const post = item.getAttribute('data-post');
+                        castVote(post);
+                    });
+                }
+            });
+
+            // Left button event (move carousel left)
+            leftBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    carousel.style.transform = `translateX(-${currentIndex * itemsPerPage * itemWidth}px)`;
+                }
+            });
+
+            // Right button event (move carousel right)
+            rightBtn.addEventListener('click', () => {
+                if (currentIndex < Math.ceil(items.length / itemsPerPage) - 1) {
+                    currentIndex++;
+                    carousel.style.transform = `translateX(-${currentIndex * itemsPerPage * itemWidth}px)`;
+                } else {
+                    window.location.href = 'thankyou.html'; // Redirect to thankyou.html when the last slide is reached
+                }
+            });
+
+            // Initialize carousel view
+            // Removed updateItemColors and updateDots since they are no longer needed
+        });
+    </script>
+</body>
+</html>
